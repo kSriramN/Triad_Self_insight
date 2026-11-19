@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="description" content="Triad — understand situations, thoughts and behaviours through patterns over time.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="styles.css">
+<title>Triad — Self Insight</title>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">△</div><div><strong>Triad</strong><span>Self Insight</span></div></div>
+    <button id="installBtn" class="icon-btn hidden" aria-label="Install app">＋</button>
+  </header>
+  <div id="storageError" class="banner hidden" role="alert"></div>
+
+  <main>
+    <section id="view-home" class="view active">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">YOUR PATTERN MAP</p>
+          <h1>Notice. Connect. Understand.</h1>
+          <p class="sub">Capture what happened, what crossed your mind, and what you did next.</p>
+        </div>
+        <button id="quickAdd" class="primary">＋ Check in</button>
+      </div>
+
+      <div class="insight-card" id="headlineInsight">
+        <div class="insight-icon">✦</div>
+        <div><span class="label">CURRENT SIGNAL</span><h3>Start logging to reveal your patterns.</h3><p>Your insights become more useful as repeated situations, thoughts and behaviours accumulate.</p></div>
+      </div>
+
+      <div class="section-head"><h2>Recent pattern</h2><button data-nav="insights">See all</button></div>
+      <div id="miniPattern" class="pattern-grid"></div>
+
+      <div class="section-head"><h2>Recent check-ins</h2><button data-nav="journal">View timeline</button></div>
+      <div id="recentEntries" class="entry-list"></div>
+    </section>
+
+    <section id="view-log" class="view">
+      <div class="page-head"><button class="back" data-nav="home">‹</button><div><p class="eyebrow">NEW CHECK-IN</p><h1>Trace the chain</h1></div></div>
+      <div class="progress"><i></i><i></i><i></i></div>
+      <form id="entryForm">
+        <div class="step active" data-step="0">
+          <span class="step-no">01</span><h2>Situation</h2><p class="hint">What happened? Keep it observable — like a camera would record it.</p>
+          <textarea id="situation" required placeholder="Example: My manager asked why a task was delayed…"></textarea>
+          <div class="chips" data-target="context" role="group" aria-label="Situation category">
+            <button type="button" data-value="Work">Work</button><button type="button" data-value="Family">Family</button><button type="button" data-value="Relationship">Relationship</button><button type="button" data-value="Money">Money</button><button type="button" data-value="Health">Health</button><button type="button" data-value="Self">Self</button>
+          </div>
+          <label class="field-label">Intensity <output id="intensityOut">5</output>/10</label>
+          <input id="intensity" type="range" min="1" max="10" value="5">
+          <button type="button" class="primary next">Continue</button>
+        </div>
+
+        <div class="step" data-step="1">
+          <span class="step-no">02</span><h2>Thought</h2><p class="hint">What was the immediate story your mind told you?</p>
+          <textarea id="thought" required placeholder="Example: They probably think I am not capable…"></textarea>
+          <div class="tagbox">
+            <span>Possible thinking style</span>
+            <div class="chips" id="distortionChips" role="group" aria-label="Thinking style">
+              <button type="button" data-value="All-or-nothing">All-or-nothing</button>
+              <button type="button" data-value="Mind reading">Mind reading</button>
+              <button type="button" data-value="Catastrophising">Catastrophising</button>
+              <button type="button" data-value="Personalising">Personalising</button>
+              <button type="button" data-value="Should thinking">Should thinking</button>
+              <button type="button" data-value="Overgeneralising">Overgeneralising</button>
+              <button type="button" data-value="Not sure">Not sure</button>
+            </div>
+          </div>
+          <div class="row"><button type="button" class="secondary prev">Back</button><button type="button" class="primary next">Continue</button></div>
+        </div>
+
+        <div class="step" data-step="2">
+          <span class="step-no">03</span><h2>Behaviour</h2><p class="hint">What did you actually do next — including avoidance, silence, reassurance seeking or overworking?</p>
+          <textarea id="behaviour" required placeholder="Example: I became quiet, delayed replying and worked late to prove myself…"></textarea>
+          <div class="tagbox"><span>Response type</span><div class="chips" id="behaviourChips" role="group" aria-label="Response type">
+            <button type="button" data-value="Approached">Approached</button><button type="button" data-value="Avoided">Avoided</button><button type="button" data-value="Withdrew">Withdrew</button><button type="button" data-value="Overworked">Overworked</button><button type="button" data-value="Sought reassurance">Sought reassurance</button><button type="button" data-value="Spoke up">Spoke up</button><button type="button" data-value="Paused">Paused</button>
+          </div></div>
+          <label class="field-label">Looking back, how helpful was the behaviour? <output id="helpfulOut">5</output>/10</label>
+          <input id="helpful" type="range" min="1" max="10" value="5">
+          <div class="row"><button type="button" class="secondary prev">Back</button><button type="submit" class="primary">Save check-in</button></div>
+        </div>
+      </form>
+    </section>
+
+    <section id="view-insights" class="view">
+      <div class="page-head"><div><p class="eyebrow">PATTERN LAB</p><h1>Insights</h1></div><button id="refreshInsights" class="icon-btn">↻</button></div>
+      <div class="segmented"><button class="active" data-period="week">7 days</button><button data-period="month">30 days</button></div>
+      <div id="insightSummary" class="insight-stack"></div>
+      <div class="section-head"><h2>Three-layer map</h2></div>
+      <div id="layerMap" class="layer-map"></div>
+      <div class="section-head"><h2>Possible blind spots</h2></div>
+      <div id="blindSpots" class="blind-list"></div>
+      <p class="disclaimer">Insights are pattern hypotheses, not personality diagnoses. Review the underlying entries before accepting an interpretation.</p>
+    </section>
+
+    <section id="view-journal" class="view">
+      <div class="page-head"><div><p class="eyebrow">YOUR RECORD</p><h1>Timeline</h1></div></div>
+      <div class="calendar-head"><button id="prevMonth">‹</button><strong id="calendarTitle"></strong><button id="nextMonth">›</button></div>
+      <div id="calendar" class="calendar"></div>
+      <div class="section-head"><h2 id="selectedDateTitle">Entries</h2><span id="selectedCount" class="muted"></span></div>
+      <div id="dayEntries" class="entry-list"></div>
+    </section>
+
+    <section id="view-settings" class="view">
+      <div class="page-head"><div><p class="eyebrow">CONTROL CENTRE</p><h1>Settings</h1></div></div>
+      <div class="settings-card">
+        <label>Theme <select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+        <button id="exportBtn" class="secondary full">Export my data</button>
+        <button id="importBtn" class="secondary full">Import data</button>
+        <input id="importFile" type="file" accept="application/json,.json" hidden>
+        <p id="importStatus" class="muted" role="status"></p>
+        <button id="clearBtn" class="danger full">Delete all local data</button>
+      </div>
+      <div class="privacy"><strong>Private by design</strong><p>Entries are stored locally in this PWA. No account is required. Cloud/AI analysis can be added later as an explicit opt-in architecture.</p></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="active" data-nav="home"><span>⌂</span>Home</button>
+    <button data-nav="insights"><span>◌</span>Insights</button>
+    <button data-nav="journal"><span>▦</span>Timeline</button>
+    <button data-nav="settings"><span>⚙</span>Settings</button>
+  </nav>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
