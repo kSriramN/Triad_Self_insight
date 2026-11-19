@@ -1,5 +1,5 @@
 // Bump VERSION on every release. The cache is named after it, and every other cache is deleted on activate.
-const VERSION = "triad-v2";
+const VERSION = "triad-v3";
 const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.json", "./icon.svg"];
 
 self.addEventListener("install", (e) => {
